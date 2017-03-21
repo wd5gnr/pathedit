@@ -10,7 +10,7 @@ So you can say:
 
 . pathedit
 
-However, I usually aliais it like this:
+However, I usually alias it like this:
 
 alias pathed=". pathedit"
 
