@@ -23,3 +23,11 @@ If you want a special editor just for this tool.
 You can source with the alias argument to automatically set up an alias:
 
 . pathedit alias
+
+####
+
+You can also use envedit to edit arbitrary environment variables:
+
+. envedit LD_PATH
+
+Of course using envedit on PATH should be the same as using pathedit
