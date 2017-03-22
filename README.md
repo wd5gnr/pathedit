@@ -31,3 +31,12 @@ You can also use envedit to edit arbitrary environment variables:
 . envedit LD_PATH
 
 Of course using envedit on PATH should be the same as using pathedit
+
+####
+
+Another technique that doesn't require any software at all is to edit your command
+line useing Control+X Control+E. However, that doesn't preload your variable into the editor.
+Sure, you could copy/paste, but now you are getting a pretty involved workflow over
+just typing pathed.
+
+I'd like to figure a way to push it into the command line editor and that may be pathed2 ;-)
