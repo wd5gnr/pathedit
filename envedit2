@@ -1,0 +1,22 @@
+#!/bin/bash
+# Do not make this executable!
+# use a . .command to invoke perhaps with an alias like pathed
+
+if [ "$0" == "$BASH_SOURCE"  -o  -z "$1" ]
+then
+ echo Error. You must source this script
+ echo Usage: . envedit2 VAR
+ echo   or   . envedit2 alias
+ echo E.g.: . $0 PATH
+else
+
+if [  "$1" = "alias" ]
+then
+  alias enved=". $BASH_SOURCE"
+  echo Alias created
+else
+
+ENVEDIT_TMP=$(echo \"\\e[0n\": \"$1=${!1}\")
+bind "$ENVEDIT_TMP" ; ((sleep 0.05; printf '\e[5n') & )
+fi
+fi

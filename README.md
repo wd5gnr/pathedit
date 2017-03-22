@@ -39,4 +39,6 @@ line useing Control+X Control+E. However, that doesn't preload your variable int
 Sure, you could copy/paste, but now you are getting a pretty involved workflow over
 just typing pathed.
 
-I'd like to figure a way to push it into the command line editor and that may be pathed2 ;-)
+If you prefer, use envedit2 the same way and you will get the environment
+variable pushed into your command line buffer. THis is a bit of a hack but
+ought to work. There's also pathedit2.
