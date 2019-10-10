@@ -40,5 +40,5 @@ Sure, you could copy/paste, but now you are getting a pretty involved workflow o
 just typing pathed.
 
 If you prefer, use envedit2 the same way and you will get the environment
-variable pushed into your command line buffer. THis is a bit of a hack but
+variable pushed into your command line buffer. This is a bit of a hack but
 ought to work. There's also pathedit2.
