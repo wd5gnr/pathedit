@@ -17,7 +17,7 @@ then
 else
 
 ENVEDIT_V=`printf '%q' ${!1}`
-ENVEDIT_TMP=$(echo \"\\e[0n\": \"$1=${ENVEDIT_V}\")
+ENVEDIT_TMP=$(echo \"\\e[0n\": \"$1=\\\"${ENVEDIT_V}\\\"\")
 bind "$ENVEDIT_TMP" ; ((sleep 0.05; printf '\e[5n') & )
 fi
 fi
