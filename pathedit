@@ -15,8 +15,9 @@ then
 else
 
   # Set up a temporary file that contains the path
+  # and replace the colons with new-lines
   PATHEDIT_FN=$(mktemp)
-  echo $PATH >"$PATHEDIT_FN"
+  echo "$PATH" | tr ':' '\n' > "$PATHEDIT_FN"
 
   # remember last time
   PATHEDIT_OLD=$(ls -li $PATHEDIT_FN)
@@ -32,8 +33,9 @@ else
   then
     echo "No changes"
   else
-    # set new path
-    PATH=$(cat "$PATHEDIT_FN")
+    # set new path, ensuring that new-lines return to colons
+    PATH=$( awk '{ if (NR > 1) { printf p; printf ":"; } p=$0; } END { print p; }' "$PATHEDIT_FN" )
+    echo "PATH=${PATH}"
   fi
 
 fi
