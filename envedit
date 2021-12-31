@@ -17,8 +17,6 @@ then
 
 else
 
-  # Uncomment out next line to override defaults
-  #ENVEDIT_EDITOR="emacs -nw"
   ENVEDIT_FN=$(mktemp)    # temporary file
   echo "${!1}" >"$ENVEDIT_FN"   # set up path
   ENVEDIT_OLD=$(ls -li $ENVEDIT_FN)  # remember last time
@@ -36,6 +34,11 @@ else
   else
     ENVEDIT_CMD=$1=\"$(cat "$ENVEDIT_FN")\"   # set new var
     eval "$ENVEDIT_CMD"
+    unset ENVEDIT_CMD
   fi
+
+  unset ENVEDIT_FN
+  unset ENVEDIT_OLD
+  unset ENVEDIT_NEW
 
 fi
