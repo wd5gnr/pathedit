@@ -14,10 +14,13 @@ then
   echo Alias created
 else
 
-  # Set up a temporary file that contains the path
+  # identify the variable that we'd like to change
+  VBL=${1:-PATH}
+
+  # Set up a temporary file that contains the desired variable
   # and replace the colons with new-lines
   PATHEDIT_FN=$(mktemp)
-  echo "$PATH" | tr ':' '\n' > "$PATHEDIT_FN"
+  echo "${!VBL}" | tr ':' '\n' > "$PATHEDIT_FN"
 
   # remember last time
   PATHEDIT_OLD=$(ls -li $PATHEDIT_FN)
@@ -33,9 +36,17 @@ else
   then
     echo "No changes"
   else
-    # set new path, ensuring that new-lines return to colons
-    PATH=$( awk '{ if (NR > 1) { printf p; printf ":"; } p=$0; } END { print p; }' "$PATHEDIT_FN" )
-    echo "PATH=${PATH}"
+    # set new variable, ensuring that new-lines return to colons
+    VBL_RESULT=$( awk '{ if (NR > 1) { printf p; printf ":"; } p=$0; } END { print p; }' "$PATHEDIT_FN" )
+    VBLEDIT_CMD=${VBL}=\"${VBL_RESULT}\"
+    eval "${VBLEDIT_CMD}"
+    echo "${VBL}=${!VBL}"
+    unset VBLEDIT_CMD
+    unset VBL_RESULT
   fi
 
+  unset PATHEDIT_NEW
+  unset PATHEDIT_OLD
+  unset PATHEDIT_FN
+  unset VBL
 fi
