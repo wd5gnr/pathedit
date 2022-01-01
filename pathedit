@@ -8,27 +8,45 @@ then
  exit 1
 fi
 
-if [  "$1" = "alias" ]
+if [  "$1" = "--alias" ]
 then
   alias pathed=". $BASH_SOURCE"
   echo Alias created
 else
 
-# Uncomment out next line to override defaults
-#PATHEDIT_EDITOR="emacs -nw"
-PATHEDIT_FN=$(mktemp)    # temporary file
-echo $PATH >"$PATHEDIT_FN"   # set up path
-PATHEDIT_OLD=$(ls -li $PATHEDIT_FN)  # remember last time
-# execute the editor as best we ecan
-command ${PATHEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "$PATHEDIT_FN"
-# examine new date
-PATHEDIT_NEW=$(ls -li $PATHEDIT_FN )
-# if file changed and is not empty
-if [ "$PATHEDIT_OLD" = "$PATHEDIT_NEW" -o ! -s "$PATHEDIT_FN" ]
-then
-  echo "No changes"
-else
-    PATH=$(cat "$PATHEDIT_FN")   # set new path
+  # identify the variable that we'd like to change
+  VBL=${1:-PATH}
 
-fi
+  # Set up a temporary file that contains the desired variable
+  # and replace the colons with new-lines
+  PATHEDIT_FN=$(mktemp)
+  echo "${!VBL}" | tr ':' '\n' > "$PATHEDIT_FN"
+
+  # remember last time
+  PATHEDIT_OLD=$(ls -li $PATHEDIT_FN)
+
+  # execute the editor as best we ecan
+  command ${PATHEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "$PATHEDIT_FN"
+
+  # examine new date
+  PATHEDIT_NEW=$(ls -li $PATHEDIT_FN)
+
+  # if file changed and is not empty
+  if [ "$PATHEDIT_OLD" = "$PATHEDIT_NEW" -o ! -s "$PATHEDIT_FN" ]
+  then
+    echo "No changes"
+  else
+    # set new variable, ensuring that new-lines return to colons
+    VBL_RESULT=$( awk '{ if (NR > 1) { printf p; printf ":"; } p=$0; } END { print p; }' "$PATHEDIT_FN" )
+    VBLEDIT_CMD=${VBL}=\"${VBL_RESULT}\"
+    eval "${VBLEDIT_CMD}"
+    echo "${VBL}=${!VBL}"
+    unset VBLEDIT_CMD
+    unset VBL_RESULT
+  fi
+
+  unset PATHEDIT_NEW
+  unset PATHEDIT_OLD
+  unset PATHEDIT_FN
+  unset VBL
 fi
