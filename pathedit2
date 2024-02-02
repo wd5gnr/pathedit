@@ -2,18 +2,18 @@
 # Do not make this executable!
 # use a . .command to invoke perhaps with an alias like pathed
 
-if [ "$0" == "$BASH_SOURCE"  ]
+if [ "$0" == "$BASH_SOURCE" ]
 then
- echo Error. You must source this script
- echo Usage: . pathedit2 VAR
- echo   or   . pathedit2 alias
- echo E.g.: . $0 
+  echo Error. You must source this script
+  echo Usage: . pathedit2 VAR
+  echo   or   . pathedit2 alias
+  echo E.g.: . $0 
 else
 
-if [  "$1" = "alias" ]
+if [ "$1" = "alias" ]
 then
-  alias pathed=". $BASH_SOURCE"
-  echo Alias created
+  alias ${2:-pathed}=". $BASH_SOURCE"
+  alias ${2:-pathed}
 else
 
 # set device OK status report to be our edit string (ESC[0n is the response to ESC[5n command)
