@@ -27,6 +27,7 @@ then
   alias ${2:-enved}
 else
 
+# set device OK status report to be our edit string (ESC[0n is the response to ESC[5n command)
 ENVEDIT_V=`printf '%q' ${!1}`
 ENVEDIT_TMP="`echo \"\\e[0n\": \"$1=\\\"${ENVEDIT_V}\\\"\"`"
 bind "${ENVEDIT_TMP}" ; ((sleep 0.05; printf '\e[5n') & )
