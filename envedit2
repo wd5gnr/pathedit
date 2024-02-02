@@ -2,18 +2,28 @@
 # Do not make this executable!
 # use a . .command to invoke perhaps with an alias like enved
 
-if [ "$0" = "$BASH_SOURCE" -o -z "$1" ]
+usage() {
+  echo Usage: . ${BASH_SOURCE[0]} VAR
+  echo "  or   . ${BASH_SOURCE[0]} alias [alias]"
+  echo E.g.: . ${BASH_SOURCE[0]} PATH
+}
+
+if [ "$0" = "${BASH_SOURCE[0]}" ]
 then
   echo Error. You must source this script
-  echo Usage: . envedit2 VAR
-  echo '  or   . envedit2 alias [alias]'
-  echo E.g.: . $0 PATH
+  usage
+  exit 1
+fi
+
+if [ -z "$1" ]
+then
+  usage
   exit 1
 fi
 
 if [ "$1" = "alias" ]
 then
-  alias ${2:-enved}=". $BASH_SOURCE"
+  alias ${2:-enved}=". `realpath ${BASH_SOURCE[0]}`"
   alias ${2:-enved}
 else
 

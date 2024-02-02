@@ -1,16 +1,18 @@
 # Do not make this executable!
 # use a . .command to invoke perhaps with an alias like pathed
 
+relative_script="${BASH_SOURCE[0]:-${(%):-%N}}"
+
 if [ "$0" = "$BASH_SOURCE" ]
 then
   echo Error. You must source this script
-  echo E.g.: . $0
+  echo E.g.: . ${relative_script}
   exit 1
 fi
 
 if [ "$1" = "alias" ]
 then
-  alias ${2:-pathed}=". $BASH_SOURCE"
+  alias ${2:-pathed}=". `realpath ${relative_script}`"
   alias ${2:-pathed}
 else
 
