@@ -3,7 +3,16 @@
 
 relative_script="${BASH_SOURCE[0]:-${(%):-%N}}"
 
-if [ "$0" = "$BASH_SOURCE" ]
+is_sourced() {
+  if [ -n "${ZSH_VERSION}" ]
+  then
+    [ ${zsh_eval_context[(I)file]} -ne 0 ]
+  else
+    ! [ "$0" = "${relative_script}" ]
+  fi
+}
+
+if ! is_sourced
 then
   echo Error. You must source this script
   echo E.g.: . ${relative_script}

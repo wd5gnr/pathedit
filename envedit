@@ -9,7 +9,15 @@ usage() {
   echo E.g.: . ${relative_script} PATH
 }
 
-if [ "$0" = "$BASH_SOURCE" ]
+is_sourced() {
+  if [ -n "${ZSH_VERSION}" ]
+  then
+    [ ${zsh_eval_context[(I)file]} -ne 0 ]
+  fi
+  ! [ "$0" = "${relative_script}" ]
+}
+
+if ! is_sourced
 then
   echo Error. You must source this script
   usage
