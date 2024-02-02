@@ -12,8 +12,8 @@ else
 
 if [ "$1" = "alias" ]
 then
-  alias pathed=". $BASH_SOURCE"
-  echo Alias created
+  alias ${2:-pathed}=". $BASH_SOURCE"
+  alias ${2:-pathed}
 else
 
 # set device OK status report to be our edit string (ESC[0n is the response to ESC[5n command)

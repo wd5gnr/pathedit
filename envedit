@@ -11,8 +11,8 @@ else
 
 if [ "$1" = "alias" ]
 then
-  alias enved=". $BASH_SOURCE"
-  echo Alias created
+  alias ${2:-enved}=". $BASH_SOURCE"
+  alias ${2:-enved}
 else
 
 # Uncomment out next line to override defaults
