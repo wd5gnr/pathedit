@@ -1,6 +1,6 @@
 #!/bin/bash
 # Do not make this executable!
-# use a . .command to invoke perhaps with an alias like pathed
+# use a . .command to invoke perhaps with an alias like enved
 
 if [ "$0" == "$BASH_SOURCE" -o -z "$1" ]
 then
