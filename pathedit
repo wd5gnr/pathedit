@@ -32,13 +32,12 @@ echo $PATH >"${PATHEDIT_FN}"   # set up path
 PATHEDIT_OLD=`ls -li ${PATHEDIT_FN}`  # remember last time
 # execute the editor as best we ecan
 command ${PATHEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "${PATHEDIT_FN}"
-# examine new date
-PATHEDIT_NEW=`ls -li $PATHEDIT_FN`
-# if file changed and is not empty
-if [ "${PATHEDIT_OLD}" = "${PATHEDIT_NEW}" -o ! -s "${PATHEDIT_FN}" ]
+# examine new date 
+if [ "${PATHEDIT_OLD}" = "`ls -li ${PATHEDIT_FN}`" -o ! -s "${PATHEDIT_FN}" ]
 then
   echo "No changes"
 else
+  # file changed and is not empty
   PATH=`cat "${PATHEDIT_FN}"`   # set new path
 fi
 fi
