@@ -1,40 +1,55 @@
 # Do not make this executable!
-# use a . .command to invoke perhaps with an alias like pathed
+# use a . .command to invoke perhaps with an alias like enved
 
-if [ "$0" == "$BASH_SOURCE"  -o  -z "$1" ]
+relative_script="${BASH_SOURCE[0]:-${(%):-%N}}"
+
+usage() {
+  echo Usage: . ${relative_script} VAR
+  echo "  or   . ${relative_script} alias [alias]"
+  echo E.g.: . ${relative_script} PATH
+}
+
+is_sourced() {
+  if [ -n "${ZSH_VERSION}" ]
+  then
+    [ ${zsh_eval_context[(I)file]} -ne 0 ]
+  fi
+  ! [ "$0" = "${relative_script}" ]
+}
+
+if ! is_sourced
 then
- echo Error. You must source this script
- echo Usage: . envedit VAR
- echo   or   . envedit alias
- echo E.g.: . $0 PATH
+  echo Error. You must source this script
+  usage
+  exit 1
+fi
 
-else
-
-
-
-if [  "$1" = "alias" ]
+if [ -z "$1" ]
 then
-  alias enved=". $BASH_SOURCE"
-  echo Alias created
+  usage
+  exit 1
+fi
+
+if [ "$1" = "alias" ]
+then
+  alias ${2:-enved}=". `realpath ${relative_script}`"
+  alias ${2:-enved}
 else
 
 # Uncomment out next line to override defaults
 #ENVEDIT_EDITOR="emacs -nw"
-ENVEDIT_FN=$(mktemp)    # temporary file
-echo ${!1} >"$ENVEDIT_FN"   # set up path
-ENVEDIT_OLD=$(ls -li $ENVEDIT_FN)  # remember last time
+ENVEDIT_FN=`mktemp`    # temporary file
+eval echo '$'${1} >"${ENVEDIT_FN}"   # set up path
+ENVEDIT_OLD=`ls -li ${ENVEDIT_FN}`  # remember last time
 # execute the editor as best we ecan
-command ${ENVEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "$ENVEDIT_FN"
+command ${ENVEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "${ENVEDIT_FN}"
 # examine new date
-ENVEDIT_NEW=$(ls -li $ENVEDIT_FN )
-# if file changed and is not empty
-if [ "$ENVEDIT_OLD" = "$ENVEDIT_NEW" -o ! -s "$ENVEDIT_FN" ]
+if [ "${ENVEDIT_OLD}" = "`ls -li ${ENVEDIT_FN}`" -o ! -s "${ENVEDIT_FN}" ]
 then
   echo "No changes"
 else
-    ENVEDIT_CMD=$1=\"$(cat "$ENVEDIT_FN")\"   # set new var
-    eval "$ENVEDIT_CMD"
-
-fi
+  # file changed and is not empty
+  ENVEDIT_CMD=$1=\"`cat "${ENVEDIT_FN}"`\"   # set new var
+  eval "${ENVEDIT_CMD}"
 fi
 fi

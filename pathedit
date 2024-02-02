@@ -1,34 +1,43 @@
 # Do not make this executable!
 # use a . .command to invoke perhaps with an alias like pathed
 
-if [ "$0" == "$BASH_SOURCE" ]
+relative_script="${BASH_SOURCE[0]:-${(%):-%N}}"
+
+is_sourced() {
+  if [ -n "${ZSH_VERSION}" ]
+  then
+    [ ${zsh_eval_context[(I)file]} -ne 0 ]
+  else
+    ! [ "$0" = "${relative_script}" ]
+  fi
+}
+
+if ! is_sourced
 then
- echo Error. You must source this script
- echo E.g.: . $0
- exit 1
+  echo Error. You must source this script
+  echo E.g.: . ${relative_script}
+  exit 1
 fi
 
-if [  "$1" = "alias" ]
+if [ "$1" = "alias" ]
 then
-  alias pathed=". $BASH_SOURCE"
-  echo Alias created
+  alias ${2:-pathed}=". `realpath ${relative_script}`"
+  alias ${2:-pathed}
 else
 
 # Uncomment out next line to override defaults
 #PATHEDIT_EDITOR="emacs -nw"
-PATHEDIT_FN=$(mktemp)    # temporary file
-echo $PATH >"$PATHEDIT_FN"   # set up path
-PATHEDIT_OLD=$(ls -li $PATHEDIT_FN)  # remember last time
+PATHEDIT_FN=`mktemp`    # temporary file
+echo ${PATH} >"${PATHEDIT_FN}"   # set up path
+PATHEDIT_OLD=`ls -li ${PATHEDIT_FN}`  # remember last time
 # execute the editor as best we ecan
-command ${PATHEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "$PATHEDIT_FN"
-# examine new date
-PATHEDIT_NEW=$(ls -li $PATHEDIT_FN )
-# if file changed and is not empty
-if [ "$PATHEDIT_OLD" = "$PATHEDIT_NEW" -o ! -s "$PATHEDIT_FN" ]
+command ${PATHEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "${PATHEDIT_FN}"
+# examine new date 
+if [ "${PATHEDIT_OLD}" = "`ls -li ${PATHEDIT_FN}`" -o ! -s "${PATHEDIT_FN}" ]
 then
   echo "No changes"
 else
-    PATH=$(cat "$PATHEDIT_FN")   # set new path
-
+  # file changed and is not empty
+  PATH=`cat "${PATHEDIT_FN}"`   # set new path
 fi
 fi
