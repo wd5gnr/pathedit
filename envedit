@@ -39,7 +39,7 @@ else
 # Uncomment out next line to override defaults
 #ENVEDIT_EDITOR="emacs -nw"
 ENVEDIT_FN=`mktemp`    # temporary file
-echo ${!1} >"${ENVEDIT_FN}"   # set up path
+eval echo '$'${1} >"${ENVEDIT_FN}"   # set up path
 ENVEDIT_OLD=`ls -li ${ENVEDIT_FN}`  # remember last time
 # execute the editor as best we ecan
 command ${ENVEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "${ENVEDIT_FN}"
