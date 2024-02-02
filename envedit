@@ -30,19 +30,19 @@ else
 
 # Uncomment out next line to override defaults
 #ENVEDIT_EDITOR="emacs -nw"
-ENVEDIT_FN=$(mktemp)    # temporary file
-echo ${!1} >"$ENVEDIT_FN"   # set up path
-ENVEDIT_OLD=$(ls -li $ENVEDIT_FN)  # remember last time
+ENVEDIT_FN=`mktemp`    # temporary file
+echo ${!1} >"${ENVEDIT_FN}"   # set up path
+ENVEDIT_OLD=`ls -li ${ENVEDIT_FN}`  # remember last time
 # execute the editor as best we ecan
-command ${ENVEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "$ENVEDIT_FN"
+command ${ENVEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "${ENVEDIT_FN}"
 # examine new date
-ENVEDIT_NEW=$(ls -li $ENVEDIT_FN )
+ENVEDIT_NEW=`ls -li ${ENVEDIT_FN}`
 # if file changed and is not empty
-if [ "$ENVEDIT_OLD" = "$ENVEDIT_NEW" -o ! -s "$ENVEDIT_FN" ]
+if [ "${ENVEDIT_OLD}" = "${ENVEDIT_NEW}" -o ! -s "${ENVEDIT_FN}" ]
 then
   echo "No changes"
 else
-  ENVEDIT_CMD=$1=\"$(cat "$ENVEDIT_FN")\"   # set new var
-  eval "$ENVEDIT_CMD"
+  ENVEDIT_CMD=$1=\"`cat "${ENVEDIT_FN}"`\"   # set new var
+  eval "${ENVEDIT_CMD}"
 fi
 fi
