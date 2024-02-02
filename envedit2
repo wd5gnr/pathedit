@@ -8,7 +8,8 @@ then
   echo Usage: . envedit2 VAR
   echo '  or   . envedit2 alias [alias]'
   echo E.g.: . $0 PATH
-else
+  exit 1
+fi
 
 if [ "$1" = "alias" ]
 then
@@ -19,5 +20,4 @@ else
 ENVEDIT_V=`printf '%q' ${!1}`
 ENVEDIT_TMP=$(echo \"\\e[0n\": \"$1=\\\"${ENVEDIT_V}\\\"\")
 bind "$ENVEDIT_TMP" ; ((sleep 0.05; printf '\e[5n') & )
-fi
 fi

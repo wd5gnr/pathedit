@@ -8,7 +8,8 @@ then
   echo Usage: . pathedit2 VAR
   echo   or   . pathedit2 alias
   echo E.g.: . $0 
-else
+  exit 1
+fi
 
 if [ "$1" = "alias" ]
 then
@@ -19,5 +20,4 @@ else
 # set device OK status report to be our edit string (ESC[0n is the response to ESC[5n command)
 ENVEDIT_TMP=$(echo \"\\e[0n\": \"PATH=\\\"${PATH}\\\"\")
 bind "$ENVEDIT_TMP" ; ((sleep 0.05; printf '\e[5n' ) & ) 
-fi
 fi

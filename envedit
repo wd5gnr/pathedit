@@ -7,7 +7,8 @@ then
   echo Usage: . envedit VAR
   echo '  or   . envedit alias [alias]'
   echo E.g.: . $0 PATH
-else
+  exit 1
+fi
 
 if [ "$1" = "alias" ]
 then
@@ -31,6 +32,5 @@ then
 else
   ENVEDIT_CMD=$1=\"$(cat "$ENVEDIT_FN")\"   # set new var
   eval "$ENVEDIT_CMD"
-fi
 fi
 fi
