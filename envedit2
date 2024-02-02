@@ -6,7 +6,7 @@ if [ "$0" == "$BASH_SOURCE" -o -z "$1" ]
 then
   echo Error. You must source this script
   echo Usage: . envedit2 VAR
-  echo   or   . envedit2 alias
+  echo '  or   . envedit2 alias [alias]'
   echo E.g.: . $0 PATH
 else
 
