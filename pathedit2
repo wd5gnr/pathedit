@@ -2,7 +2,7 @@
 # Do not make this executable!
 # use a . .command to invoke perhaps with an alias like pathed
 
-if [ "$0" == "$BASH_SOURCE" ]
+if [ "$0" = "$BASH_SOURCE" ]
 then
   echo Error. You must source this script
   echo Usage: . pathedit2 VAR
