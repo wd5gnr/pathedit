@@ -28,7 +28,7 @@ else
 # Uncomment out next line to override defaults
 #PATHEDIT_EDITOR="emacs -nw"
 PATHEDIT_FN=`mktemp`    # temporary file
-echo $PATH >"${PATHEDIT_FN}"   # set up path
+echo ${PATH} >"${PATHEDIT_FN}"   # set up path
 PATHEDIT_OLD=`ls -li ${PATHEDIT_FN}`  # remember last time
 # execute the editor as best we ecan
 command ${PATHEDIT_EDITOR:-${VISUAL:-${EDITOR:-vi}}} "${PATHEDIT_FN}"
